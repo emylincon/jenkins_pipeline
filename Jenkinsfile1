@@ -33,7 +33,7 @@ pipeline{
                 sh '''
                 cd frontend
                 mv ecs-docker-compose.yaml docker-compose.yml
-                #docker context create ecs myecscontext --from-env
+                docker context create ecs myecscontext --from-env
                 docker context use myecscontext
                 docker compose up
                 docker compose ps
