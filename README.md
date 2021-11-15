@@ -26,6 +26,9 @@ terraform apply
 
 #### Access jenkins server and install plugins
 * Run `terraform output` to access the ip address of your jenkins server 
+```
+ssh -i ~/.ssh/id_rsa ubuntu@<ip_address>
+```
 * install suggested plugins and create user details
 * before creating new job install the aws jenkins credential
 * go to `manage jenkins > manage plugins > available` and search and install without restart `CloudBees AWS Credentials`

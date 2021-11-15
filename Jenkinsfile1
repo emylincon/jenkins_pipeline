@@ -14,7 +14,7 @@ pipeline{
         }
         stage("build"){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'password', usernameVariable: 'username')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'password', usernameVariable: 'username'), aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'aws_credential', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
                 cd frontend
                 echo building image
@@ -33,7 +33,7 @@ pipeline{
                 sh '''
                 cd frontend
                 mv ecs-docker-compose.yaml docker-compose.yml
-                docker context create ecs myecscontext --from-env
+                #docker context create ecs myecscontext --from-env
                 docker context use myecscontext
                 docker compose up
                 docker compose ps
