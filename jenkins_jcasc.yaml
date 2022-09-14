@@ -1,0 +1,134 @@
+jenkins:
+  systemMessage: "Welcome to Jenkins!"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Overall/Administer:admin"
+      - "Overall/Read:authenticated"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+      - id: "admin"
+        password: "${JENKINS_ADMIN_PASSWORD}"
+        properties:
+        - timezone:
+            timeZoneName: "Europe/Amsterdam"
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "Docker credentials"
+          id: "docker"
+          password: "${DOCKER_PASSWD}"
+          scope: GLOBAL
+          username: "${DOCKER_USERNAME}" 
+
+
+jobs:
+  - script: >
+        pipelineJob('Check') {
+            description('Check Jenkins Environment')
+            displayName('Check')
+            definition {
+                cpsScm {
+                  lightweight(true)
+                      
+                  scriptPath('jenkinsfiles/Check')
+                  
+                  scm {
+                    git {
+                      branch("*/main")
+                      extensions {
+                        cleanBeforeCheckout()
+                      }
+                      remote {
+                        github('emylincon','https','github.com')
+                        name('main')
+                        refspec('+refs/heads/main:refs/remotes/origin/main')
+                        url('https://github.com/emylincon/jenkins_pipeline.git')
+                      } 
+                      browser{
+                        githubWeb {
+                          repoUrl('https://github.com/emylincon/jenkins_pipeline.git')
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+            properties {
+              githubProjectUrl('https://github.com/emylincon/jenkins_pipeline.git')
+            }
+        }
+  - script: >
+        pipelineJob('ECS-Build') {
+            description('AWS ECS ENV Build')
+            displayName('ECS-Build')
+            definition {
+                cpsScm {
+                  lightweight(true)
+                      
+                  scriptPath('jenkinsfiles/Build')
+                  
+                  scm {
+                    git {
+                      branch("*/main")
+                      extensions {
+                        cleanBeforeCheckout()
+                      }
+                      remote {
+                        github('emylincon','https','github.com')
+                        name('main')
+                        refspec('+refs/heads/main:refs/remotes/origin/main')
+                        url('https://github.com/emylincon/jenkins_pipeline.git')
+                      } 
+                      browser{
+                        githubWeb {
+                          repoUrl('https://github.com/emylincon/jenkins_pipeline.git')
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+            properties {
+              githubProjectUrl('https://github.com/emylincon/jenkins_pipeline.git')
+            }
+        }
+  - script: >
+        pipelineJob('Teardown-ECS') {
+            description('AWS ECS ENV Teardown')
+            displayName('Teardown-ECS')
+            definition {
+                cpsScm {
+                  lightweight(true)
+                      
+                  scriptPath('jenkinsfiles/Teardown')
+                  
+                  scm {
+                    git {
+                      branch("*/main")
+                      extensions {
+                        cleanBeforeCheckout()
+                      }
+                      remote {
+                        github('emylincon','https','github.com')
+                        name('main')
+                        refspec('+refs/heads/main:refs/remotes/origin/main')
+                        url('https://github.com/emylincon/jenkins_pipeline.git')
+                      } 
+                      browser{
+                        githubWeb {
+                          repoUrl('https://github.com/emylincon/jenkins_pipeline.git')
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+            properties {
+              githubProjectUrl('https://github.com/emylincon/jenkins_pipeline.git')
+            }
+        }
