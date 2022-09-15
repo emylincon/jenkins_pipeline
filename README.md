@@ -46,7 +46,7 @@ ssh -i ~/.ssh/id_rsa ubuntu@<ip_address>
 #### Create Job
 * go to `new item` and enter name, choose `pipeline` and click `OK`
 ![screenshot](images/pipeline.png)
-* navigate to pipeline and copy and paste the script in `Jenkinsfile1`
+* navigate to pipeline and copy and paste the script in [`jenkinsfiles/Build`](jenkinsfiles/Build)
 ![screenshot](images/script.png)
 * apply and save
 * then trigger build
