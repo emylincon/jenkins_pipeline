@@ -6,6 +6,7 @@ This is a pipeline that can be used to create a jenkins ecs job running on amazo
 First you provision the jenkins server on aws using terraform
 * initialize the terraform workspace
 ```
+cd aws/
 terraform init
 ```
 * export aws credential for terraform to authenticate your account
