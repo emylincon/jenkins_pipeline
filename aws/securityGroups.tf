@@ -1,7 +1,6 @@
 resource "aws_security_group" "allow_jenkins" {
   name        = "allow_jenkins_emeka"
   description = "Allow ssh and 8080 inbound traffic"
-  #vpc_id      = var.vpc
 
   ingress {
     description = "TLS from VPC"

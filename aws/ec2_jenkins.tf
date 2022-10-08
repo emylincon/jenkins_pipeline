@@ -1,6 +1,6 @@
 
-resource "aws_key_pair" "emeka_key" {
-  key_name   = "emeka-key-one"
+resource "aws_key_pair" "local_key" {
+  key_name   = "local-key-pair"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
@@ -21,11 +21,10 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "jenkins" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.medium"
-  #subnet_id              = var.subnet
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
   user_data              = file("ubuntu_jenkins.sh")
-  key_name               = aws_key_pair.emeka_key.key_name
+  key_name               = aws_key_pair.local_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_jenkins.id]
 
   tags = {
