@@ -26,6 +26,7 @@ resource "aws_instance" "jenkins" {
   user_data              = file("ubuntu_jenkins.sh")
   key_name               = aws_key_pair.local_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_jenkins.id]
+  iam_instance_profile   = aws_iam_instance_profile.jenkins_profile.name
 
   tags = {
     Name = "TestJenkins"
